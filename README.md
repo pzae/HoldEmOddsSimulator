@@ -2,6 +2,10 @@
 
 A Python-based tool that calculates poker win probabilities using Monte Carlo simulations. This application provides poker players with real-time insights into their chances of winning, tying, or losing a hand based on their cards, community cards, and opponent information.  
 
+### Huggingface spaces🤗
+
+https://huggingface.co/spaces/pzae/HoldEmOddsSimulator
+
 ### Features
 
 - Calculate win, tie, and loss probabilities in Texas Hold'em poker  
