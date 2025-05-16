@@ -63,6 +63,7 @@ def calculate_probabilities(my_cards, table_cards, opponent_cards, num_opponents
 # Create Gradio interface
 with gr.Blocks(title="Poker Win Probability Calculator") as demo:
     gr.Markdown("# Poker Win Probability Calculator")
+    gr.Markdown("For more info: https://github.com/pzae/HoldEmOddsSimulator")
     
     # Input section
     with gr.Row():
@@ -72,7 +73,7 @@ with gr.Blocks(title="Poker Win Probability Calculator") as demo:
                 placeholder="Required to fill out"            
             )
             table_cards_input = gr.Textbox(
-                label="Table Cards (comma separated, e.g., '2с, Ah, 9s, ..')",
+                label="Table Cards (comma separated, e.g., '2c, Ah, 9s, ..')",
                 placeholder="Leave empty if unknown"
             )
             opponent_cards_input = gr.Textbox(
@@ -84,7 +85,7 @@ with gr.Blocks(title="Poker Win Probability Calculator") as demo:
                 label="Number of Opponents"
             )
             num_simulations_input = gr.Radio(
-                choices=[100, 1000, 5000, 10000],
+                choices=[100, 1000, 5000, 10000, 20000],
                 value=1000,
                 label="Number of Simulations",
                 type="value"
@@ -101,11 +102,11 @@ with gr.Blocks(title="Poker Win Probability Calculator") as demo:
     gr.Markdown("""
     ## How to use
     
-    1. Enter your cards separated by commas (e.g., "Kh, 9d")
-    2. Enter the table cards separated by commas. Use empty positions for unknown cards (e.g., "2h,Ah, 9s, , ")
-    3. Optionally enter known opponent cards in format "As,9h;Kd,Qd" for multiple opponents
-    4. Set the number of opponents and simulations
-    5. Click Calculate Probabilities
+    1. Enter your hand cards separated by commas (e.g., "Kh, 9d"). Exactly 2 cards.
+    2. Enter the table cards separated by commas. Use empty positions for unknown cards (e.g., "2h,Ah, 9s, , ").
+    3. Optionally enter known opponent hand cards in format "As, 9h; Kd, Qd" for multiple opponents.
+    4. Set the number of opponents and simulations.
+    5. Click Calculate Probabilities.
     
     Card notation: 
     - 2-9, T (ten), J (jack), Q (queen), K (king), A (ace)

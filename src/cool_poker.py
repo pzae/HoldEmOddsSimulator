@@ -11,16 +11,16 @@ class WinProba():
     def __init__(self):
 
         self.COMBINATION_NAMES = {
-            10: "Роял-флеш",
-            9: "Стрит-флеш",
-            8: "Каре",
-            7: "Фулл-хаус",
-            6: "Флеш",
-            5: "Стрит",
-            4: "Тройка",
-            3: "Две пары",
-            2: "Пара",
-            1: "Старшая карта"
+            10: "Royal flush",
+            9: "Straight flush",
+            8: "Four of a kind",
+            7: "Full house",
+            6: "Flush",
+            5: "Straight",
+            4: "Three of a kind",
+            3: "Two pair",
+            2: "Pair",
+            1: "High card"
         }
 
         # Определение колоды
@@ -48,7 +48,7 @@ class WinProba():
     def evaluate_five_cards(self, cards):
         """Оценивает комбинацию из 5 карт по системе, где более сильная рука имеет большее значение."""
         if len(cards) != 5:
-            raise ValueError("Должно быть ровно 5 карт для оценки")
+            ValueError("There must be exactly 5 cards for evaluation")
         
         # Извлекаем ранги и масти
         ranks = [card[0] for card in cards]
@@ -167,14 +167,14 @@ class WinProba():
         """
         
         def parse_card(card):
-            """Разбирает карту на ранг и масть."""
+            """Parses a card into rank and suit."""
             if len(card) != 2:
-                raise ValueError(f"Некорректный формат карты: {card}. Используйте формат 'ранг+масть', например 'Ah'")
+                raise ValueError(f"Invalid card format: {card}. Use 'rank+suit' format, for example 'Ah'")
             rank, suit = card[0], card[1]
             if rank not in self.RANKS:
-                raise ValueError(f"Некорректный ранг: {rank}. Допустимые ранги: {', '.join(self.RANKS)}")
+                raise ValueError(f"Invalid rank: {rank}. Valid ranks: {', '.join(self.RANKS)}")
             if suit not in self.SUITS:
-                raise ValueError(f"Некорректная масть: {suit}. Допустимые масти: {', '.join(self.SUITS)}")
+                raise ValueError(f"Invalid suit: {suit}. Valid suits: {', '.join(self.SUITS)}")
             return rank, suit
         
         # Удаляем пустые строки
@@ -189,18 +189,18 @@ class WinProba():
             # Находим дубликаты
             seen = set()
             duplicates = [card for card in valid_cards if card in seen or seen.add(card)]
-            raise ValueError(f"{context}Обнаружены дублирующиеся карты: {', '.join(duplicates)}")
+            raise ValueError(f"{context}Duplicate cards detected: {', '.join(duplicates)}")
         
         # Проверка количества карт в зависимости от контекста
-        if context == "Игрок: ":
+        if context == "Player: ":
             if not (1 <= len(valid_cards) <= 2):
-                raise ValueError(f"{context}У вас должно быть 1 или 2 карты на руках")
-        elif context == "Стол: ":
+                raise ValueError(f"{context}You must have 1 or 2 cards in hand")
+        elif context == "Board: ":
             if not (0 <= len(valid_cards) <= 5):
-                raise ValueError(f"{context}На столе должно быть от 0 до 5 карт")
-        elif "Оппонент" in context:
+                raise ValueError(f"{context}There must be 0 to 5 cards on the board")
+        elif "Opponent" in context:
             if not (1 <= len(valid_cards) <= 2):
-                raise ValueError(f"{context}У оппонента должно быть 1 или 2 карты на руках")
+                raise ValueError(f"{context}Opponent must have 1 or 2 cards in hand")
         
         return valid_cards
 
@@ -229,19 +229,19 @@ class WinProba():
                 raise ValueError("Должен быть хотя бы один оппонент")
             
             # Валидируем карты игрока и стола
-            valid_my_cards = self.validate_cards(my_cards, "Игрок: ")
-            valid_table_cards = self.validate_cards(table_cards, "Стол: ")
+            valid_my_cards = self.validate_cards(my_cards, "Player: ")
+            valid_table_cards = self.validate_cards(table_cards, "Board: ")
             
             # Валидируем карты оппонентов, если они предоставлены
             valid_opponents_cards = []
             if opponents_cards:
                 for i, opponent_cards in enumerate(opponents_cards):
-                    valid_opponent_cards = self.validate_cards(opponent_cards, f"Оппонент {i+1}: ")
+                    valid_opponent_cards = self.validate_cards(opponent_cards, f"Opponent {i+1}: ")
                     valid_opponents_cards.append(valid_opponent_cards)
                 
                 # Проверяем, что число оппонентов соответствует предоставленным картам
                 if len(valid_opponents_cards) > num_opponents:
-                    raise ValueError(f"Количество предоставленных рук оппонентов ({len(valid_opponents_cards)}) превышает указанное число оппонентов ({num_opponents})")
+                    raise ValueError(f"The number of provided opponent hands ({len(valid_opponents_cards)}) exceeds the specified number of opponents ({num_opponents})")
             
             return valid_my_cards, valid_table_cards, valid_opponents_cards
         
@@ -254,7 +254,7 @@ class WinProba():
             if len(all_cards) != len(set(all_cards)):
                 seen = set()
                 duplicates = [card for card in all_cards if card in seen or seen.add(card)]
-                raise ValueError(f"Обнаружены дублирующиеся карты между разными игроками или столом: {', '.join(duplicates)}")
+                raise ValueError(f"Duplicate cards detected between different players or the board: {', '.join(duplicates)}")
         
         def complete_table_cards(valid_table_cards, deck):
             """Добавляет недостающие карты на стол."""
